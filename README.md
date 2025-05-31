@@ -59,7 +59,7 @@ bash scripts/NO_heter.sh
 bash scripts/PINO_heter.sh
 '''
 
-If you use this dataset or codebase in your research, please cite:
+✨ If you use this dataset or codebase in your research, please consider citing us:
 ```
 @dataset{zhong_no4mre_2025,
   author       = {Weiheng Zhong, Matthew Urban, Hadi Meidani},
