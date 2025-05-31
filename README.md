@@ -14,11 +14,13 @@
 
 Your directory structure should look like this:
 
+```
 NO4MRE/
 ├── simulation/
 │ ├── processed_data/
 │ ├── data_general_heter.pkl
 │ └── data_general_homo.pkl
+```
 
 
 ## 🧪 Simulation with FEniCSx (DolfinX)
