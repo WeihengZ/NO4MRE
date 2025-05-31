@@ -45,7 +45,7 @@ python fem_img_complex_incom.py
 ```
 
 
-## Machine learning baselines
+## 🧪 Machine learning baselines
 
 ### step 1: create a conda environment with Python=3.12 and install the required package of requirement.txt:
 ```
