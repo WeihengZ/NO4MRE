@@ -27,7 +27,6 @@ import pickle
 from PIL import Image
 from matplotlib import cm
 from matplotlib.colors import LinearSegmentedColormap
-import nibabel as nib
 import numpy as np
 from scipy.ndimage import zoom
 import os
@@ -65,7 +64,7 @@ np.random.seed(53)
 
 for id in range(currentID, currentID+num_samples):
 
-    print(id)
+    print('Generating {}-th sample'.format(id))
 
     # Create mesh
     msh = create_rectangle(MPI.COMM_WORLD, [np.array([0.0, 0.0]), np.array([size_scale, size_scale])], [res, res], CellType.triangle)
@@ -210,20 +209,17 @@ for id in range(currentID, currentID+num_samples):
 
     # Example usage
     stage_id = np.random.randint(1,5)
-    funcls = fun_gen(r'./liver_maps/color/field_{}.png'.format(id), r'./liver_maps/liver_masks/mask_{}.pkl'.format(id), size_scale)
+    funcls = fun_gen(r'./Processed_data/color/field_{}.png'.format(id), r'./Processed_data/liver_masks/mask_{}.pkl'.format(id), size_scale)
     # funcls = fun_gen(r'./liver_maps/test/color.png', r'./liver_maps/test/mask.png', size_scale)
 
     # Create the indicator function in the scalar function space
     indicator_function = Function(V_scalar)
     indicator_function.interpolate(lambda x: funcls.is_point_inside_curve(x))
 
-    # Visualize geometry
-    plt.figure(figsize=(3, 3))
+    # Create the mesh and function space
     coordinates = msh.geometry.x
     grid_x, grid_y = np.mgrid[0:1*size_scale:res*1j, 0:1*size_scale:res*1j]
     E_img = scipy.interpolate.griddata(coordinates[:, :2], indicator_function.x.array.real, (grid_x, grid_y), method='linear', fill_value=0)
-    sns.heatmap(E_img)
-    plt.savefig('./test_geo.png')
 
     # Interpolate E and nu into scalar function spaces
     print('Generating the PDE parameters ...')
@@ -244,8 +240,6 @@ for id in range(currentID, currentID+num_samples):
         eps = epsilon(u)
         mu = ufl.variable(E_function)
         return 2 * mu * eps 
-    
-    print("E_function:", type(E_function), E_function.ufl_shape)         # should be (), ()
 
     # Define variational problem
     u = ufl.TrialFunction(V)
@@ -285,39 +279,6 @@ for id in range(currentID, currentID+num_samples):
     mu_real = scipy.interpolate.griddata(coordinates[:,:2], mu_vals.real, (grid_x, grid_y), method='linear', fill_value=0)
     mu_imag = scipy.interpolate.griddata(coordinates[:,:2], mu_vals.imag, (grid_x, grid_y), method='linear', fill_value=0)
 
-    # mask
-    # min_stiff_inside = np.amin(mu_img[E_img==1])
-    # mu_img[E_img == 0] = 0
-    # min_lam_inside = np.amin(lam_img[E_img==1])
-    # lam_img[E_img == 0] = min_lam_inside
-
-
-    # jet = plt.cm.get_cmap('jet', 256)
-    # newcolors = jet(np.linspace(0, 1, 256))
-    # newcolors[0] = np.array([0, 0, 0, 1])  # RGBA for black
-    # black_jet = LinearSegmentedColormap.from_list('black_jet', newcolors)
-
-    # plt.figure(figsize=(6, 6))
-    # plt.subplot(3, 3, 1)
-    # sns.heatmap(mu_real, cmap=jet)
-
-    # plt.subplot(3, 3, 3)
-    # sns.heatmap(u_imag, cmap=jet)
-    # plt.subplot(3, 3, 4)
-    # sns.heatmap(v_imag, cmap=jet)
-    # plt.subplot(3, 3, 5)
-    # sns.heatmap(u_real, cmap=jet)
-    # plt.subplot(3, 3, 6)
-    # sns.heatmap(v_real, cmap=jet)
-    # plt.subplot(3, 3, 7)
-    # sns.heatmap(mu_imag, cmap=jet)
-
-    # plt.subplot(3, 3, 9)
-    # sns.heatmap(E_img, cmap=jet)
-
-    # plt.savefig('./final.png')
-    # assert 1==2
-
     # combine two images
     disp_map = np.concatenate(
         (np.expand_dims(u_real, 0), np.expand_dims(v_real, 0), np.expand_dims(u_imag, 0), np.expand_dims(v_imag, 0)), 0)
@@ -338,4 +299,5 @@ for id in range(currentID, currentID+num_samples):
 
 with open('data_general_incom.pkl', 'wb') as handle:
     pickle.dump(all_data, handle)
+print('All samples generated and saved to data_general_incom.pkl')
 

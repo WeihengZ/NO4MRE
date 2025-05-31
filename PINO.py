@@ -22,20 +22,15 @@ args = parser.parse_args()
 
 # load the data
 if args.data == 'heter':
-    with open('/taiga/illinois/eng/cee/meidani/Vincent/MRE/data_general_0_300.pkl', 'rb') as handle:
+    with open('./simulation/data_general_heter.pkl', 'rb') as handle:
         mat_contents = pickle.load(handle)
     data = extract_data(mat_contents)
 elif args.data == 'homo':
-    with open('/taiga/illinois/eng/cee/meidani/Vincent/MRE/data_general_incom.pkl', 'rb') as handle:
+    with open('./simulation/data_general_incom.pkl', 'rb') as handle:
         mat_contents = pickle.load(handle)
     data = extract_data(mat_contents)
 train_loader, val_loader, test_loader = create_physics_informed_data_loader(data, [0.7,0.8], 1, train_shuffle=False)
-
-# '''
-# only for debug
-# '''
-# val_loader = train_loader
-# test_loader = train_loader
+print(len(train_loader), len(val_loader), len(test_loader))
 
 # define devices
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")

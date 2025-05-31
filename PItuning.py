@@ -22,7 +22,7 @@ args = parser.parse_args()
 
 # load the data
 if args.data == 'heter':
-    with open('/taiga/illinois/eng/cee/meidani/Vincent/MRE/data_general_0_300.pkl', 'rb') as handle:
+    with open('/taiga/illinois/eng/cee/meidani/Vincent/MRE/data_general_heter.pkl', 'rb') as handle:
         mat_contents = pickle.load(handle)
     data = extract_data(mat_contents)
 elif args.data == 'homo':
