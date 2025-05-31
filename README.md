@@ -54,10 +54,10 @@ conda activate no4mre
 ```
 
 ### step 2: run the bash script to run data-driven training of the models and physics-informed training of the models:
-'''
+```
 bash scripts/NO_heter.sh
 bash scripts/PINO_heter.sh
-'''
+```
 
 ✨ If you use this dataset or codebase in your research, please consider citing us:
 ```
