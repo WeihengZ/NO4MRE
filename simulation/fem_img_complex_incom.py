@@ -54,7 +54,7 @@ freq = 60.0
 omega = 2 * np.pi * freq
 
 # define number of samples
-num_samples = 300
+num_samples = 3
 currentID = 0
 
 
@@ -297,7 +297,7 @@ for id in range(currentID, currentID+num_samples):
     # store it in the dataset
     all_data[id] = data
 
-with open('data_general_incom.pkl', 'wb') as handle:
+with open('data_general_homo.pkl', 'wb') as handle:
     pickle.dump(all_data, handle)
-print('All samples generated and saved to data_general_incom.pkl')
+print('All samples generated and saved to data_general_homo.pkl')
 

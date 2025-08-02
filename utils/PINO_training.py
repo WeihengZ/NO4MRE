@@ -36,7 +36,7 @@ def train(args, model, device, loaders, optimizer):
             if args.data == 'heter':
                 residual_u, residual_v = pde_residual_compute_heter(disp_map[:,:,:,0], disp_map[:,:,:,1],
                     mu_pred, lam_pred, x, y, rho_omega_square, mask)
-            elif args.data == 'homo':
+            elif args.data == 'homo' or args.data == 'homo3d_slicing':
                 residual_u, residual_v = pde_residual_compute_homo(disp_map[:,:,:,0], disp_map[:,:,:,1],
                     mu_pred, x, y, rho_omega_square, mask)
             # mask
@@ -54,6 +54,8 @@ def train(args, model, device, loaders, optimizer):
             print('average relative error:', rel_err)
             if rel_err <= min(err_list):
                 print('saved new model.')
+                # Ensure the trained_models directory exists
+                os.makedirs('./trained_models', exist_ok=True)
                 torch.save(model.state_dict(), r'./trained_models/{}_{}_{}.pth'.format(args.model, args.data, args.train_method))
 
 def tuning(args, model, device, loaders, optimizer):

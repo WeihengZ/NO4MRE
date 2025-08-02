@@ -4,7 +4,7 @@ import torch
 import torch.optim as optim
 
 
-from utils.PINO_data import extract_data, create_physics_informed_data_loader
+from utils.PINO_data import extract_data, extract_3D_slice_data, create_physics_informed_data_loader
 from utils.PINO_training import train, plot, test
 from models.FNO import physics_informed_FNO_Model
 from models.Unet import physics_informed_Unet_Model
@@ -26,9 +26,14 @@ if args.data == 'heter':
         mat_contents = pickle.load(handle)
     data = extract_data(mat_contents)
 elif args.data == 'homo':
-    with open('./simulation/data_general_incom.pkl', 'rb') as handle:
+    with open('./simulation/data_general_homo.pkl', 'rb') as handle:
         mat_contents = pickle.load(handle)
     data = extract_data(mat_contents)
+elif args.data == 'homo3d_slicing':
+    with open('./simulation/data_general_incom_3D.pkl', 'rb') as handle:
+        mat_contents = pickle.load(handle)
+    data = extract_3D_slice_data(mat_contents)
+
 train_loader, val_loader, test_loader = create_physics_informed_data_loader(data, [0.7,0.8], 1, train_shuffle=False)
 print(len(train_loader), len(val_loader), len(test_loader))
 

@@ -56,6 +56,65 @@ def extract_data(mat_contents):
 
     return [xcoor, ycoor, u, mu, mask, kk]
 
+def extract_3D_slice_data(mat_contents):
+
+    # structure the data
+    xcoor_list = []
+    ycoor_list = []
+    u_list = []
+    mu_list = []
+    mask_list = []
+    kk_list = []
+
+    for i in mat_contents.keys():
+        xcoor = mat_contents[i]['xcoor']   
+        ycoor = mat_contents[i]['ycoor']    
+        u = mat_contents[i]['U']    
+        mu = mat_contents[i]['mu'] 
+        mask = mat_contents[i]['mask'] 
+        rho_omega_square = mat_contents[i]['omega_over_c']
+
+        # extract only XY displacement on the middle slice
+        u = u[[0,1,3,4], :, :, u.shape[-1]//2]
+        mu = mu[:, :, :, mu.shape[-1]//2]
+        mask = mask[:, :, mask.shape[-1]//2]
+        xcoor = xcoor[:, :, xcoor.shape[-1]//2]
+        ycoor = ycoor[:, :, ycoor.shape[-1]//2]
+
+        # print(u.shape, mu.shape, mask.shape, xcoor.shape, ycoor.shape)
+        # assert 1==2
+        
+        # mask the displacement
+        for j in range(u.shape[0]):
+            field = u[j]
+            field[mask==0] = 0
+            u[j,:,:] = field
+        for j in range(mu.shape[0]):
+            field = mu[j]
+            field[mask==0] = 0
+            mu[j,:,:] = field
+        
+        # store the data
+        xcoor_list.append(xcoor)
+        ycoor_list.append(ycoor)
+        u_list.append(u)
+        mu_list.append(mu)
+        mask_list.append(mask)
+        kk_list.append(rho_omega_square)
+
+    '''
+    all the data are assumed to be the same size
+    '''
+    xcoor = torch.from_numpy(np.array(xcoor_list))
+    ycoor = torch.from_numpy(np.array(ycoor_list))
+    u = torch.from_numpy(np.array(u_list))
+    mu = torch.from_numpy(np.array(mu_list))
+    mask = torch.from_numpy(np.array(mask_list))
+    kk = torch.from_numpy(np.array(kk_list))
+    print(xcoor.shape, ycoor.shape, u.shape, mu.shape, mask.shape, kk.shape)
+
+    return [xcoor, ycoor, u, mu, mask, kk]
+
 def create_physics_informed_data_loader(data, split_ratio, bs, train_shuffle=True):
     # Extract input data
     xcoor = data[0]

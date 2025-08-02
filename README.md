@@ -51,6 +51,7 @@ python fem_img_complex_incom.py
 ```
 conda create -n no4mre python=3.12
 conda activate no4mre
+pip3 install -r requirements.txt
 ```
 
 ### step 2: run the bash script to run data-driven training of the models and physics-informed training of the models:

@@ -54,6 +54,8 @@ def train(args, model, device, loaders, optimizer):
             print('average relative error:', rel_err)
             if rel_err <= min(err_list):
                 print('saved new model.')
+                # Ensure the trained_models directory exists
+                os.makedirs('./trained_models', exist_ok=True)
                 torch.save(model.state_dict(), r'./trained_models/{}_{}_{}.pth'.format(args.model, args.data, args.train_method))
     
 
