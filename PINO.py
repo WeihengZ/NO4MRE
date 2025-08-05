@@ -17,7 +17,7 @@ parser.add_argument('--phase', type=str, default='test')
 parser.add_argument('--model', type=str, default='WNO')
 parser.add_argument('--data', type=str, default='heter')
 parser.add_argument('--train_method', type=str, default='PINO')
-parser.add_argument('--epochs', type=int, default=500)
+parser.add_argument('--epochs', type=int, default=100)
 args = parser.parse_args()
 
 # load the data

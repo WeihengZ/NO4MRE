@@ -32,7 +32,7 @@ echo "job is starting on `hostname`"
 which python3
 conda list pytorch
 
-python3 NO.py --model='FNO' --data='heter'
-python3 NO.py --model='WNO' --data='heter'
-python3 NO.py --model='Unet' --data='heter'
-python3 NO.py --model='UFNO' --data='heter'
+python3 NO.py --model='FNO' --phase='train' --data='heter'
+python3 NO.py --model='WNO' --phase='train' --data='heter'
+python3 NO.py --model='Unet' --phase='train' --data='heter'
+python3 NO.py --model='UFNO' --phase='train' --data='heter'

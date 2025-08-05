@@ -96,7 +96,7 @@ def tuning(args, model, device, loaders, optimizer):
                 residual_u, residual_v, residual_w = pde_residual_compute_heter_3d(
                     disp_map[:,:,:,:,0], disp_map[:,:,:,:,1], disp_map[:,:,:,:,2],
                     mu_pred, lam_pred, x, y, z, rho_omega_square, mask)
-            elif args.data == 'homo':
+            elif args.data == 'homo' or args.data == 'homo3d':
                 residual_u, residual_v, residual_w = pde_residual_compute_homo_3d(
                     disp_map[:,:,:,:,0], disp_map[:,:,:,:,1], disp_map[:,:,:,:,2],
                     mu_pred, x, y, z, rho_omega_square, mask)

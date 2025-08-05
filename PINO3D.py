@@ -8,7 +8,9 @@ import os
 from utils.PINO3D_data import extract_data, create_physics_informed_data_loader
 from utils.PINO3D_training import train, plot, test, tuning, plot_tuned
 from models.FNO3D import physics_informed_FNO3D_Model
-
+from models.WNO3D import physics_informed_WNO3D_Model
+from models.Unet3D import physics_informed_Unet3D_Model
+from models.U_FNO3D import physics_informed_UFNO3D_Model
 
 # set arguments
 parser = argparse.ArgumentParser(description='command setting')
@@ -35,6 +37,12 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # define model
 if args.model == 'FNO':
     model = physics_informed_FNO3D_Model().float().to(device)
+elif args.model == 'WNO':
+    model = physics_informed_WNO3D_Model().float().to(device)
+elif args.model == 'Unet':
+    model = physics_informed_Unet3D_Model().float().to(device)
+elif args.model == 'UFNO':
+    model = physics_informed_UFNO3D_Model().float().to(device)
 
 # try loading pre-trained model
 try:

@@ -7,6 +7,9 @@ import torch.optim as optim
 from utils.NO3D_data import extract_data, create_data_driven_data_loader
 from utils.NO3D_training import train, plot, test
 from models.FNO3D import data_driven_FNO3D_Model
+from models.WNO3D import data_driven_WNO3D_Model
+from models.Unet3D import data_driven_Unet3D_Model
+from models.U_FNO3D import data_driven_UFNO3D_Model
 
 
 # set arguments
@@ -15,7 +18,7 @@ parser.add_argument('--phase', type=str, default='test')
 parser.add_argument('--model', type=str, default='WNO')
 parser.add_argument('--data', type=str, default='homo3d')
 parser.add_argument('--train_method', type=str, default='NO3D')
-parser.add_argument('--epochs', type=int, default=500)
+parser.add_argument('--epochs', type=int, default=100)
 args = parser.parse_args()
 
 # load the data
@@ -33,6 +36,12 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # define model
 if args.model == 'FNO':
     model =  data_driven_FNO3D_Model().float().to(device)
+if args.model == 'WNO':
+    model =  data_driven_WNO3D_Model().float().to(device)
+if args.model == 'Unet':
+    model =  data_driven_Unet3D_Model().float().to(device)
+if args.model == 'UFNO':
+    model =  data_driven_UFNO3D_Model().float().to(device)
 
 # try loading pre-trained model
 try:
