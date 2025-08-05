@@ -45,7 +45,7 @@ Experiment - 3D Heterogeneous Version
 # Simulation parameters
 size_scale = 0.2
 z_depth = 0.03  # Depth in z-direction
-res = 60  # Reduced resolution for 3D to manage computational cost
+res = 50  # Reduced resolution for 3D to manage computational cost
 res_z = 9  # Resolution in z-direction
 AA = 5e-3
 num_waves = 5
